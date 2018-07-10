@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mybatis的具体的dao对应的配置文件，类似于那个impl
+
+namespace要和我们的dao的接口进行绑定
+-->
+<mapper namespace="com.sz.mapper.StudentMapper">
+
+
+    <!--CRUD都提供了标准的标签
+        C:create
+        R:retrieve
+        U:update
+        D:delete
+        增删改查
+    -->
+
+    <!--对于select而言，我们要通知mybatis，你帮我封装成我指定的数据类型
+        list集合（如果你要查询的结果是一个集合，你描述集合当中的元素的是java类型就可以了。）
+        如果你要查询的结果就是一个普通的java对象，resultType直接写对应的pojo就可以了。
+    -->
+    <select id="listAll" resultType="com.sz.entity.Student">
+      select * from student
+    </select>
+
+
+    <!--标签里面的ID的含义和我们的接口当中的方法名一一对应
+    student对象 ，入参是一个student对象，通过#{}语法去取实参里面的值
+    ORM框架都会设计一个具名参数，参数本身有名字，有含义。
+    -->
+    <insert id="insert" parameterType="com.sz.entity.Student">
+
+        insert into student (name,age) values(#{name},#{age})
+    </insert>
+
+    
+    <select id="selectByName" resultType="com.sz.entity.Student">
+      select * from student where name = #{name}
+    </select>
+
+
+    <select id="selectByNameAndAge" resultType="com.sz.entity.Student">
+      select * from student where name = #{name} and age = #{age}
+    </select>
+
+
+    <!--
+    mybatis而言，基本上都能自我推断返回值（基本数据类型）
+
+    -->
+    <update id="update" >
+      update student set name = #{name} , age = #{age}
+      where id = #{id}
+    </update>
+    
+    <delete id="deleteByPrimaryKey">
+        delete from student where id = #{id}
+    </delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
