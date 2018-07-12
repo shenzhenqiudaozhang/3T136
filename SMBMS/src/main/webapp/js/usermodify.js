@@ -17,6 +17,9 @@ $(function(){
 	birthday.next().html("*");
 	phone.next().html("*");
 	userRole.next().html("*");
+
+	// var userRole = "${user.userName}";
+	// alert(userRole);
 	
 	
 	$.ajax({
@@ -25,6 +28,9 @@ $(function(){
 		data:{method:"getrolelist"},//请求参数
 		dataType:"json",//ajax接口（请求url）返回的数据类型
 		success:function(data){//data：返回数据（json对象）
+			// 能否获取role.id
+			// var userRole = "${user.userName}";
+			// alert(userRole);
 			if(data != null){
 				var rid = $("#rid").val();
 				userRole.html("");
@@ -120,3 +126,20 @@ $(function(){
 		}
 	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sz.mapper.HusbandMapper">
 
-    
-    
+    <cache  eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+
+
     <resultMap id="husbandWithWife" type="com.sz.entity.Husband">
         <id property="id" column="husband_id"/>
         <result property="name" column="husband_name"/>
@@ -13,7 +17,7 @@
 
 
     
-    <select id="selectByPrimaryKey" resultMap="husbandWithWife">
+    <select id="selectByPrimaryKey" resultMap="husbandWithWife" useCache="true">
         SELECT   t1.`husband_id` , t1.`name` as husband_name ,
         t3.`wife_id`,t3.`name` as wife_name
         FROM husband t1 LEFT JOIN husband_wife t2

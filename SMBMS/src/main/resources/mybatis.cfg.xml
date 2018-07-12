@@ -18,7 +18,7 @@
         在外的属性文件当中的优先级高于
         property子节点
     -->
-    <properties resource="db.properties"/>
+    <properties resource="database.properties"/>
     <!--<properties resource="testdb.properties"/>-->
     <!--注册别名-->
 
@@ -41,21 +41,21 @@
                 <!--数据库连接的四项基本属性-->
                 <property name="url" value="${url}"/>
                 <property name="driver" value="${driver}"/>
-                <property name="username" value="${username}"/>
+                <property name="username" value="${user}"/>
                 <property name="password" value="${password}"/>
             </dataSource>
         </environment>
-        <environment id="test">
-            <transactionManager type="JDBC"/>
-            <!--支持三种类型 UNPOOLED  POOLED  JNDI-->
-            <dataSource type="POOLED">
-                <!--数据库连接的四项基本属性-->
-                <property name="url" value="${url}test"/>
-                <property name="driver" value="${driver}"/>
-                <property name="username" value="${username}"/>
-                <property name="password" value="${password}"/>
-            </dataSource>
-        </environment>
+        <!--<environment id="test">-->
+            <!--<transactionManager type="JDBC"/>-->
+            <!--&lt;!&ndash;支持三种类型 UNPOOLED  POOLED  JNDI&ndash;&gt;-->
+            <!--<dataSource type="POOLED">-->
+                <!--&lt;!&ndash;数据库连接的四项基本属性&ndash;&gt;-->
+                <!--<property name="url" value="${url}test"/>-->
+                <!--<property name="driver" value="${driver}"/>-->
+                <!--<property name="username" value="${user}"/>-->
+                <!--<property name="password" value="${password}"/>-->
+            <!--</dataSource>-->
+        <!--</environment>-->
 
     </environments>
 
@@ -66,6 +66,6 @@
         <!--<mapper class="com.sz.dao.StudentDao"/>-->
         <!--通过包的方式引入，一劳永逸-->
         <!--就用这种-->
-        <package name="com.sz.mapper"/>
+        <package name="cn.smbms.dao.user"/>
     </mappers>
 </configuration>

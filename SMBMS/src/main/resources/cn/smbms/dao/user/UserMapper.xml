@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="cn.smbms.dao.user.UserMapper" >
+
+    <resultMap id="baseUser" type="cn.smbms.pojo.User">
+        <id property="id" column="id"/>
+        <result property="birthday" column="birthday"/>
+        <result property="gender" column="gender"/>
+        <result property="address" column="address"/>
+        <result property="age" column="age"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="creationDate" column="creationDate"/>
+        <result property="modifyBy" column="modifyBy"/>
+        <result property="phone" column="phone"/>
+        <result property="userCode" column="userCode"/>
+        <result property="userName" column="userName"/>
+        <result property="modifyDate" column="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="userWithRole" type="cn.smbms.pojo.User" extends="baseUser">
+        <association property="role" javaType="cn.smbms.pojo.Role">
+            <result property="roleName" column="roleName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryUserByUserNameAndPassword" resultType="cn.smbms.pojo.User">
+
+        SELECT id, userCode,userName,userPassword
+        FROM `smbms_user`
+        WHERE userCode = #{userCode} and userPassword = #{userPassword}
+    </select>
+    <select id="getUserList" resultMap="userWithRole">
+            SELECT t1.* ,t2.roleName
+            FROM smbms_user t1 , `smbms_role` t2
+
+        <where>
+            t1.userRole = t2.id
+            <if test="userName != null and userName != ''">
+                AND t1.userName LIKE CONCAT('%',#{userName},'%')
+            </if>
+            <if test="userRole != null and userRole gt 0">
+                and t2.id = #{userRole}
+            </if>
+        </where>
+
+            LIMIT #{start},#{pageSize};
+    </select>
+    <select id="getUserCount" resultType="int">
+        SELECT COUNT(*)
+        FROM `smbms_user` t1 ,`smbms_role` t2
+        <where>
+            t1.userRole = t2.id
+            <if test="userName != null and userName != ''">
+                AND t1.userName LIKE CONCAT('%',#{userName},'%')
+            </if>
+            <if test="userRole != null and userRole gt 0">
+                and t2.id = #{userRole}
+            </if>
+        </where>
+
+
+    </select>
+    <!--前方注意，不要被自动生成的标签坑了-->
+    <delete id="deleteUserById" >
+        DELETE
+        FROM `smbms_user`
+        WHERE id = #{delId}
+    </delete>
+
+    <insert id="add">
+        INSERT INTO `smbms_user`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="userName != null">
+              userName,
+          </if>
+          <if test="modifyDate != null">
+              modifyDate,
+          </if>
+          <!--<if test="age != null">-->
+              <!--age,-->
+              <!--age,-->
+          <!--</if>-->
+          <if test="address != null">
+              address,
+          </if>
+          <if test="birthday != null">
+            birthday,
+          </if>
+          <if test="createdBy != null">
+              createdBy,
+          </if>
+          <if test="creationDate != null">
+              creationDate,
+          </if>
+          <if test="gender != null">
+              gender,
+          </if>
+          <if test="modifyBy != null">
+              modifyBy,
+          </if>
+          <if test="phone != null">
+              phone,
+          </if>
+          <if test="userCode != null">
+              userCode,
+          </if>
+          <if test="userPassword != null">
+              userPassword,
+          </if>
+            <if test=" role != null  ">
+                <if test="role.id != null">
+                    userRole,
+                </if>
+            </if>
+        </trim>
+
+        <trim suffix=")" prefix="values(" suffixOverrides=",">
+
+
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate},
+            </if>
+            <!--<if test="age != null">-->
+                <!--#{age},-->
+            <!--</if>-->
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="birthday != null">
+                #{birthday},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="creationDate != null">
+                #{creationDate},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="modifyBy != null">
+                #{modifyBy},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="userCode != null">
+                #{userCode},
+            </if>
+            <if test="userPassword != null">
+                #{userPassword},
+            </if>
+            <if test=" role != null  ">
+                <if test="role.id != null">
+                    #{role.id},
+                </if>
+            </if>
+        </trim>
+
+    </insert>
+
+    <update id="modify">
+        update smbms_user
+        <set>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test=" role != null  ">
+                <if test="role.id != null">
+                    userRole = #{role.id},
+                </if>
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <select id="getUserById" resultMap="userWithRole">
+      select  *
+      from smbms_user where id = #{id}
+    </select>
+</mapper>

@@ -49,7 +49,7 @@
 				<div>
                     <label >用户角色：</label>
                     <!-- 列出所有的角色分类 -->
-					<input type="hidden" value="${user.userRole }" id="rid" />
+					<input type="hidden" value="${user.role.id }" id="rid" />
 					<select name="userRole" id="userRole"></select>
         			<font color="red"></font>
                 </div>
@@ -60,6 +60,7 @@
             </form>
         </div>
     </div>
+${user.userName}
 </section>
 <%@include file="/jsp/common/foot.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/usermodify.js"></script>

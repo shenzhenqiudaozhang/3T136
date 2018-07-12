@@ -4,8 +4,9 @@ import java.sql.Connection;
 import java.util.List;
 
 import cn.smbms.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
-public interface UserDao {
+public interface UserMapper {
 	/**
 	 * 增加用户信息
 	 * @param connection
@@ -13,16 +14,13 @@ public interface UserDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public int add(Connection connection, User user)throws Exception;
+	  int add( User user);
 
-	/**
-	 * 通过userCode获取User
-	 * @param connection
-	 * @param userCode
-	 * @return
-	 * @throws Exception
-	 */
-	public User getLoginUser(Connection connection, String userCode)throws Exception;
+
+	User queryUserByUserNameAndPassword(
+			@Param("userCode") String userCode,
+			@Param("userPassword")	String userPassword);
+
 
 	/**
 	 * 通过条件查询-userList
@@ -32,7 +30,8 @@ public interface UserDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNo, int pageSize)throws Exception;
+	public List<User> getUserList(@Param("userName") String userName, @Param("userRole") Integer userRole,
+								 @Param("start") Integer start, @Param("pageSize") Integer pageSize) ;
 	/**
 	 * 通过条件查询-用户表记录数
 	 * @param connection
@@ -41,7 +40,7 @@ public interface UserDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public int getUserCount(Connection connection, String userName, int userRole)throws Exception;
+	public int getUserCount(@Param("userName") String userName,@Param("userRole") Integer userRole) ;
 	
 	/**
 	 * 通过userId删除user
@@ -49,7 +48,7 @@ public interface UserDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public int deleteUserById(Connection connection, Integer delId)throws Exception;
+	int deleteUserById(@Param("delId") Integer delId) ;
 	
 	
 	/**
@@ -59,7 +58,7 @@ public interface UserDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public User getUserById(Connection connection, String id)throws Exception;
+	  User getUserById(@Param("id") String id) ;
 	
 	/**
 	 * 修改用户信息
@@ -68,7 +67,7 @@ public interface UserDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public int modify(Connection connection, User user)throws Exception;
+	int modify( User user) ;
 	
 	
 	/**

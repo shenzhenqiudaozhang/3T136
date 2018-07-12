@@ -25,6 +25,19 @@ public class Test3 {
         mapper.update(husband);
         Husband husband2 = mapper.selectByPrimaryKey(1);
 
+    }
+
+    @Test
+    public void m2() {
+        SqlSession session = MybatisUtil.getSession();
+        HusbandMapper mapper = session.getMapper(HusbandMapper.class);
+        Husband husband = mapper.selectByPrimaryKey(1);
+        System.out.println(husband);
+        session.close();
+        SqlSession session1 = MybatisUtil.getSession();
+        HusbandMapper mapper1 = session1.getMapper(HusbandMapper.class);
+        mapper1.selectByPrimaryKey(1);
+        session1.close();
 
     }
 

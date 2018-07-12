@@ -151,6 +151,8 @@ public class UserServlet extends HttpServlet {
 	
 	private void modify(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		System.out.println("========================++++++++++++++++++++++++++++++++");
 		String id = request.getParameter("uid");
 		String userName = request.getParameter("userName");
 		String gender = request.getParameter("gender");
@@ -171,14 +173,20 @@ public class UserServlet extends HttpServlet {
 		}
 		user.setPhone(phone);
 		user.setAddress(address);
-		user.setUserRole(Integer.valueOf(userRole));
+		Role role = new Role();
+		role.setId(Integer.valueOf(userRole));
+//		user.setUserRole(Integer.valueOf(userRole));
+		user.setRole(role);
 		user.setModifyBy(((User)request.getSession().getAttribute(Constants.USER_SESSION)).getId());
 		user.setModifyDate(new Date());
 		
 		UserService userService = new UserServiceImpl();
 		if(userService.modify(user)){
+			System.out.println("重定向");
 			response.sendRedirect(request.getContextPath()+"/jsp/user.do?method=query");
 		}else{
+			System.out.println("转发");
+			request.setAttribute("user",userService.getUserById(id));
 			request.getRequestDispatcher("usermodify.jsp").forward(request, response);
 		}
 	
@@ -341,6 +349,7 @@ public class UserServlet extends HttpServlet {
 	
 	private void add(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		System.out.println("add()================");
 		String userCode = request.getParameter("userCode");
 		String userName = request.getParameter("userName");
@@ -349,9 +358,14 @@ public class UserServlet extends HttpServlet {
 		String birthday = request.getParameter("birthday");
 		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
+
+		System.out.println("addresss =========" + address);
 		String userRole = request.getParameter("userRole");
-		
+		System.out.println("userROLE====" + userRole);
 		User user = new User();
+		Role role = new Role();
+		role.setId(Integer.valueOf(userRole));
+		user.setRole(role);
 		user.setUserCode(userCode);
 		user.setUserName(userName);
 		user.setUserPassword(userPassword);
@@ -364,7 +378,7 @@ public class UserServlet extends HttpServlet {
 		}
 		user.setGender(Integer.valueOf(gender));
 		user.setPhone(phone);
-		user.setUserRole(Integer.valueOf(userRole));
+//		user.setUserRole(Integer.valueOf(userRole));
 		user.setCreationDate(new Date());
 		user.setCreatedBy(((User)request.getSession().getAttribute(Constants.USER_SESSION)).getId());
 		
